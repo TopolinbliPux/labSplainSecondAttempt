@@ -128,9 +128,6 @@ namespace splain {
 		{
 			System::Windows::Forms::DataVisualization::Charting::ChartArea^ chartArea1 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
 			System::Windows::Forms::DataVisualization::Charting::Legend^ legend1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
-			System::Windows::Forms::DataVisualization::Charting::Series^ series1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
-			System::Windows::Forms::DataVisualization::Charting::Series^ series2 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
-			System::Windows::Forms::DataVisualization::Charting::Series^ series3 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
 			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->radioButton4 = (gcnew System::Windows::Forms::RadioButton());
@@ -231,6 +228,7 @@ namespace splain {
 			this->radioButton4->TabStop = true;
 			this->radioButton4->Text = L"sin(x+1)/x";
 			this->radioButton4->UseVisualStyleBackColor = true;
+			this->radioButton4->CheckedChanged += gcnew System::EventHandler(this, &MyForm::radioButton4_CheckedChanged);
 			// 
 			// radioButton3
 			// 
@@ -242,6 +240,7 @@ namespace splain {
 			this->radioButton3->TabStop = true;
 			this->radioButton3->Text = L"ln(x+1)/x";
 			this->radioButton3->UseVisualStyleBackColor = true;
+			this->radioButton3->CheckedChanged += gcnew System::EventHandler(this, &MyForm::radioButton3_CheckedChanged);
 			// 
 			// radioButton2
 			// 
@@ -253,6 +252,7 @@ namespace splain {
 			this->radioButton2->TabStop = true;
 			this->radioButton2->Text = L"ln(x+1)/(x+1)";
 			this->radioButton2->UseVisualStyleBackColor = true;
+			this->radioButton2->CheckedChanged += gcnew System::EventHandler(this, &MyForm::radioButton2_CheckedChanged);
 			// 
 			// radioButton1
 			// 
@@ -264,6 +264,7 @@ namespace splain {
 			this->radioButton1->TabStop = true;
 			this->radioButton1->Text = L"ϕ(x)";
 			this->radioButton1->UseVisualStyleBackColor = true;
+			this->radioButton1->CheckedChanged += gcnew System::EventHandler(this, &MyForm::radioButton1_CheckedChanged);
 			// 
 			// groupBox2
 			// 
@@ -698,7 +699,6 @@ namespace splain {
 			this->textBox5->Name = L"textBox5";
 			this->textBox5->Size = System::Drawing::Size(78, 22);
 			this->textBox5->TabIndex = 21;
-			this->textBox5->Text = L"1000";
 			// 
 			// label16
 			// 
@@ -761,24 +761,6 @@ namespace splain {
 			this->chart1->Legends->Add(legend1);
 			this->chart1->Location = System::Drawing::Point(535, 9);
 			this->chart1->Name = L"chart1";
-			series1->ChartArea = L"ChartArea1";
-			series1->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Spline;
-			series1->Legend = L"Legend1";
-			series1->LegendText = L"Функции, сплайна и ошибки";
-			series1->Name = L"Series1";
-			series2->ChartArea = L"ChartArea1";
-			series2->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Spline;
-			series2->Legend = L"Legend1";
-			series2->LegendText = L"Первых производных и ошибки";
-			series2->Name = L"Series2";
-			series3->ChartArea = L"ChartArea1";
-			series3->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Spline;
-			series3->Legend = L"Legend1";
-			series3->LegendText = L"Вторых производных и ошибки";
-			series3->Name = L"Series3";
-			this->chart1->Series->Add(series1);
-			this->chart1->Series->Add(series2);
-			this->chart1->Series->Add(series3);
 			this->chart1->Size = System::Drawing::Size(1500, 801);
 			this->chart1->TabIndex = 9;
 			this->chart1->Text = L"chart1";
@@ -992,7 +974,7 @@ private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e
 			   int n = Int32::Parse(textBox3->Text);
 			   double a = Double::Parse(textBox1->Text);
 			   double b = Double::Parse(textBox2->Text);
-			   int N = Int32::Parse(textBox5->Text);
+			   int N = 10*n;
 			   //расчет шага h
 			   double h = (b - a) / n;
 
@@ -1108,7 +1090,9 @@ private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e
 			   textBox11->Text = maxDiffSecond.ToString("F8");
 			   textBox10->Text = maxDiffSecondIndex.ToString();
 			   textBox14->Text = xMaxDiffSecond.ToString("F8");
+			   
 
+			   textBox5->Text = N.ToString();
 		   }
 		   catch (Exception^ ex)
 		   {
@@ -1337,5 +1321,35 @@ private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e
 				   MessageBoxIcon::Error);
 		   }
 	   }
+	   private:
+		   // Значения по умолчанию
+		   const double DEFAULT_TEXTBOX1_VALUE = 1.0;
+		   const double DEFAULT_TEXTBOX2_VALUE = 2.0;
+private: System::Void radioButton1_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+	if (radioButton1->Checked) {
+		radioButton5->Checked = true;
+		radioButton12->Checked = true;
+		textBox1->Text = "-1";  
+		textBox2->Text = "1";
+	}
+}
+private: System::Void radioButton2_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+	if (radioButton2->Checked) {
+		textBox1->Text = DEFAULT_TEXTBOX1_VALUE.ToString();
+		textBox2->Text = DEFAULT_TEXTBOX2_VALUE.ToString();
+	}
+}
+private: System::Void radioButton3_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+	if (radioButton3->Checked) {
+		textBox1->Text = DEFAULT_TEXTBOX1_VALUE.ToString();
+		textBox2->Text = DEFAULT_TEXTBOX2_VALUE.ToString();
+	}
+}
+private: System::Void radioButton4_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+	if (radioButton4->Checked) {
+		textBox1->Text = DEFAULT_TEXTBOX1_VALUE.ToString();
+		textBox2->Text = DEFAULT_TEXTBOX2_VALUE.ToString();
+	}
+}
 };
 }
