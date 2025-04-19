@@ -111,6 +111,10 @@ namespace splain {
 	private: System::Windows::Forms::Label^ label19;
 	private: System::Windows::Forms::Label^ label21;
 	private: System::Windows::Forms::DataVisualization::Charting::Chart^ chart1;
+
+	private:
+		int typeOfFunc = 4; // Значение по умолчанию (соответствует radioButton2)
+		int typeOfOsc = 0;  // Значение по умолчанию (соответствует radioButton5)
 	protected:
 
 	private:
@@ -297,6 +301,7 @@ namespace splain {
 			this->radioButton7->TabStop = true;
 			this->radioButton7->Text = L"f(x)+cos(100x)";
 			this->radioButton7->UseVisualStyleBackColor = true;
+			this->radioButton7->CheckedChanged += gcnew System::EventHandler(this, &MyForm::radioButton7_CheckedChanged);
 			// 
 			// radioButton6
 			// 
@@ -308,6 +313,7 @@ namespace splain {
 			this->radioButton6->TabStop = true;
 			this->radioButton6->Text = L"f(x)+cos(10x)";
 			this->radioButton6->UseVisualStyleBackColor = true;
+			this->radioButton6->CheckedChanged += gcnew System::EventHandler(this, &MyForm::radioButton6_CheckedChanged);
 			// 
 			// radioButton5
 			// 
@@ -319,6 +325,7 @@ namespace splain {
 			this->radioButton5->TabStop = true;
 			this->radioButton5->Text = L"нет";
 			this->radioButton5->UseVisualStyleBackColor = true;
+			this->radioButton5->CheckedChanged += gcnew System::EventHandler(this, &MyForm::radioButton5_CheckedChanged);
 			// 
 			// groupBox3
 			// 
@@ -800,10 +807,10 @@ namespace splain {
 
 		}
 #pragma endregion
-	private: System::Void groupBox1_Enter(System::Object^ sender, System::EventArgs^ e) {
-	}
-	private: System::Void dataGridView2_CellContentClick(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e) {
-	}
+private: System::Void groupBox1_Enter(System::Object^ sender, System::EventArgs^ e) {
+}
+private: System::Void dataGridView2_CellContentClick(System::Object^ sender, System::Windows::Forms::DataGridViewCellEventArgs^ e) {
+}
 private: System::Void MyForm_Load(System::Object^ sender, System::EventArgs^ e) {
 }
 private: System::Void label20_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -823,22 +830,10 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 		   double b = Double::Parse(textBox2->Text);
 
 		   //объявление флагов для функции и осцилляции typeOfFunc = {3,4,5,6}, typeOfOsc = {0,1,2}
-		   int typeOfFunc;
-		   int typeOfOsc;
+
 		   //объявление второй производной на границах интервала
 		   double SecondDerivate_a;
 		   double SecondDerivate_b;
-
-		   //выбираем функцию
-		   if (radioButton1->Checked) { typeOfFunc = 3; }
-		   if (radioButton2->Checked) { typeOfFunc = 4; }
-		   if (radioButton3->Checked) { typeOfFunc = 5; }
-		   if (radioButton4->Checked) { typeOfFunc = 6; }
-
-		   //выбрали осцилляцию
-		   if (radioButton5->Checked) { typeOfOsc = 0; }
-		   if (radioButton6->Checked) { typeOfOsc = 1; }
-		   if (radioButton7->Checked) { typeOfOsc = 2; }
 
 		   //учет mu1 и mu2
 		   if (radioButton11->Checked)
@@ -886,23 +881,10 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 
 			   // Объявляем переменные здесь, чтобы они были видны во всей функции
 			   vector<double> a_coeff, b_coeff, c_coeff, d_coeff;
-			   //объявление флагов для функции и осцилляции typeOfFunc = {3,4,5,6}, typeOfOsc = {0,1,2}
-			   int typeOfFunc = 10;
-			   int typeOfOsc = 10;
+
 			   //объявление граничных условий
 			   double mu1;
 			   double mu2;
-
-			   //выбираем функцию
-			   if (radioButton1->Checked) { typeOfFunc = 3; }
-			   if (radioButton2->Checked) { typeOfFunc = 4; }
-			   if (radioButton3->Checked) { typeOfFunc = 5; }
-			   if (radioButton4->Checked) { typeOfFunc = 6; }
-
-			   //выбрали осцилляцию
-			   if (radioButton5->Checked) { typeOfOsc = 0; }
-			   if (radioButton6->Checked) { typeOfOsc = 1; }
-			   if (radioButton7->Checked) { typeOfOsc = 2; }
 
 			   // Создаем узлы сетки и вычисляем значения функции
 			   vector<double> xs(n + 1), fi(n + 1);
@@ -981,22 +963,10 @@ private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e
 			   // Объявляем переменные здесь, чтобы они были видны во всей функции
 			   vector<double> a_coeff, b_coeff, c_coeff, d_coeff;
 			   //объявление флагов для функции и осцилляции typeOfFunc = {3,4,5,6}, typeOfOsc = {0,1,2}
-			   int typeOfFunc = 10;
-			   int typeOfOsc = 10;
+			   
 			   //объявление граничных условий
 			   double mu1;
 			   double mu2;
-
-			   //выбираем функцию
-			   if (radioButton1->Checked) { typeOfFunc = 3; }
-			   if (radioButton2->Checked) { typeOfFunc = 4; }
-			   if (radioButton3->Checked) { typeOfFunc = 5; }
-			   if (radioButton4->Checked) { typeOfFunc = 6; }
-
-			   //выбрали осцилляцию
-			   if (radioButton5->Checked) { typeOfOsc = 0; }
-			   if (radioButton6->Checked) { typeOfOsc = 1; }
-			   if (radioButton7->Checked) { typeOfOsc = 2; }
 
 			   // Создаем узлы сетки, вычисляем значения функции, производной и второй проивзодной
 			   vector<double> xs(n + 1), fi(n + 1), fiFirstderivate(n + 1), fiSecondDerivate(n + 1);
@@ -1327,6 +1297,7 @@ private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e
 		   const double DEFAULT_TEXTBOX2_VALUE = 2.0;
 private: System::Void radioButton1_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
 	if (radioButton1->Checked) {
+		typeOfFunc = 3;
 		radioButton5->Checked = true;
 		radioButton12->Checked = true;
 		textBox1->Text = "-1";  
@@ -1335,21 +1306,33 @@ private: System::Void radioButton1_CheckedChanged(System::Object^ sender, System
 }
 private: System::Void radioButton2_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
 	if (radioButton2->Checked) {
+		typeOfFunc = 4;
 		textBox1->Text = DEFAULT_TEXTBOX1_VALUE.ToString();
 		textBox2->Text = DEFAULT_TEXTBOX2_VALUE.ToString();
 	}
 }
 private: System::Void radioButton3_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
 	if (radioButton3->Checked) {
+		typeOfFunc = 5;
 		textBox1->Text = DEFAULT_TEXTBOX1_VALUE.ToString();
 		textBox2->Text = DEFAULT_TEXTBOX2_VALUE.ToString();
 	}
 }
 private: System::Void radioButton4_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
 	if (radioButton4->Checked) {
+		typeOfFunc = 6;
 		textBox1->Text = DEFAULT_TEXTBOX1_VALUE.ToString();
 		textBox2->Text = DEFAULT_TEXTBOX2_VALUE.ToString();
 	}
+}
+private: System::Void radioButton5_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+	if (radioButton5->Checked) { typeOfOsc = 0; }
+}
+private: System::Void radioButton6_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+	if (radioButton6->Checked) { typeOfOsc = 1; }
+}
+private: System::Void radioButton7_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+	if (radioButton7->Checked) { typeOfOsc = 2; }
 }
 };
 }
