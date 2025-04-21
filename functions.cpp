@@ -96,13 +96,14 @@ vector<double> sweepMethod(int n, double h, double mu1, double mu2, vector<doubl
 	vector<double> alpha(n), beta(n); //векторы для хранения коэффициентов альфа и бета
 	alpha[0] = 0;
 	beta[0] = mu1;
+	double Ai = h; // коэффициент Ai из метода прогонки
+	double Bi = h; // коэффициент Вi из метода прогонки
+	double Ci = -4. * h; // коэффициент Сi из метода прогонки
 
 	//прямой ход прогонки
-	for (int i = 1; i < n - 1; i++) {//у альфа и бета индексы сдвинуты на 1
-		double Ai = h; // коэффициент Ai из метода прогонки
-		double Bi = h; // коэффициент Вi из метода прогонки
-		double Ci = -2 * h; // коэффициент Сi из метода прогонки
-		double fii = -6 * ((f[i + 1] - f[i]) / h - (f[i] - f[i - 1]) / h); // коэффициент fi_i из разностной схемы
+	for (int i = 1; i <= n - 1; i++) {//у альфа и бета индексы сдвинуты на 1                                          //n-1 включительно????
+		//вынесли ABC за цикл
+		double fii = -6. * ((f[i + 1] - f[i]) / h - (f[i] - f[i - 1]) / h); // коэффициент fi_i из разностной схемы
 		alpha[i] = Bi / (Ci - Ai * alpha[i - 1]);
 		beta[i] = (fii + Ai * beta[i - 1]) / (Ci - Ai * alpha[i - 1]);
 	}
@@ -125,7 +126,7 @@ vector<vector<double>>getCoeffs(int n, double mu1, double mu2, double h, vector<
 	for (int i = 1; i <= n; i++) {
 		a[i - 1] = f[i];
 		d[i - 1] = (c[i] - c[i - 1]) / h;
-		b[i - 1] = (f[i] - f[i - 1]) / h + c[i] * h / 3 + c[i - 1] * h / 6;
+		b[i - 1] = (f[i] - f[i - 1]) / h + c[i] * h / 3. + c[i - 1] * h / 6.;
 	}
 
 	vector<vector<double>>res;
